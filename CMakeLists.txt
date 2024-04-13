@@ -161,10 +161,11 @@ if(Qt5Core_FOUND)
 	message(STATUS "	 includes:" ${Qt5Core_INCLUDE_DIRS})
 	find_package(Qt5Widgets REQUIRED)
 	find_package(Qt5Gui REQUIRED)
+    find_package(Qt5Network REQUIRED)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
-	set(QT_INCLUDE_DIRS ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS})
-	set(QT_LIBRARIES Qt5::Gui Qt5::Widgets)
-	add_definitions(${Qt5Gui_DEFINITIONS} ${Qt5Widgets_DEFINITIONS})
+	set(QT_INCLUDE_DIRS ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS})
+	set(QT_LIBRARIES Qt5::Gui Qt5::Widgets Qt5::Network)
+	add_definitions(${Qt5Gui_DEFINITIONS} ${Qt5Widgets_DEFINITIONS} ${Qt5Network_DEFINITIONS})
 else()
 	find_package(Qt6Core QUIET)
 endif()
@@ -174,10 +175,11 @@ if(Qt6Core_FOUND)
 	message(STATUS "	 includes:" ${Qt6Core_INCLUDE_DIRS})
 	find_package(Qt6Widgets REQUIRED)
 	find_package(Qt6Gui REQUIRED)
+	find_package(Qt6Network REQUIRED)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt6Widgets_EXECUTABLE_COMPILE_FLAGS}")
-	set(QT_INCLUDE_DIRS ${Qt6Gui_INCLUDE_DIRS} ${Qt6Widgets_INCLUDE_DIRS})
-	set(QT_LIBRARIES Qt6::Gui Qt6::Widgets)
-	add_definitions(${Qt6Gui_DEFINITIONS} ${Qt6Widgets_DEFINITIONS})
+	set(QT_INCLUDE_DIRS ${Qt6Gui_INCLUDE_DIRS} ${Qt6Widgets_INCLUDE_DIRS} ${Qt6Network_INCLUDE_DIRS})
+	set(QT_LIBRARIES Qt6::Gui Qt6::Widgets Qt6::Network)
+	add_definitions(${Qt6Gui_DEFINITIONS} ${Qt6Widgets_DEFINITIONS} ${Qt6Network_DEFINITIONS})
 endif()
 
 if(NOT Qt5Core_FOUND AND NOT Qt6Core_FOUND)
@@ -274,6 +276,7 @@ set(DSView_SOURCES
     DSView/pv/dialogs/storeprogress.cpp
     DSView/pv/storesession.cpp
     DSView/pv/view/devmode.cpp
+    DSView/pv/tcp_server.cpp
     DSView/pv/device/device.cpp
     DSView/pv/dialogs/waitingdialog.cpp
     DSView/pv/dialogs/dsomeasure.cpp
@@ -400,6 +403,7 @@ set(DSView_HEADERS
     DSView/pv/view/decodetrace.h
     DSView/pv/widgets/decodergroupbox.h
     DSView/pv/widgets/decodermenu.h
+    DSView/pv/tcp_server.h
     DSView/pv/config/appconfig.h
     DSView/pv/appcontrol.h
     DSView/pv/dstimer.h

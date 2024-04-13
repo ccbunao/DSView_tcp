@@ -49,7 +49,9 @@ public:
         QWidget *parent = 0);
 
 	virtual ~StoreProgress();
-
+    void save_file_by_cmd(QString);
+    void accept_slot();
+    QString get_error();
  
 protected:
     void reject();
@@ -57,6 +59,7 @@ protected:
 
 private:
 	void show_error();
+    void accept_base(bool);
     void closeEvent(QCloseEvent* e);
 
 signals:

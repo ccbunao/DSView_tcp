@@ -184,6 +184,30 @@ void SamplingBar::retranslateUi()
     _action_repeat->setText(tr("&Repetitive"));
 }
 
+void SamplingBar::ctrl_start(){
+    if(_sampling){
+        return;
+    }
+    emit _run_stop_button.clicked();
+}
+
+void SamplingBar::ctrl_instant(){
+    if(_sampling){
+        return;
+    }
+    emit _instant_button.clicked();
+}
+
+void SamplingBar::ctrl_stop(){
+    if(_sampling){
+        if(_instant){
+            emit _instant_button.clicked();
+        }else{
+            emit _run_stop_button.clicked();
+        }
+    }
+}
+
 void SamplingBar::reStyle()
 {
     DevInst *dev_inst = get_selected_device();

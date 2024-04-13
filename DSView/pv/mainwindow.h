@@ -31,6 +31,7 @@
 #include "interface/icallbacks.h"
 #include "eventobject.h"
 #include "interface/uicallback.h"
+#include "tcp_server.h"
 
 class QAction;
 class QMenuBar;
@@ -79,7 +80,7 @@ class MainWindow : public QMainWindow, public ISessionCallback, public IMainForm
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-
+    ~MainWindow();
     void openDoc();
   
 private:
@@ -110,7 +111,7 @@ private slots:
     void on_search(bool visible);
     void on_screenShot();
     void on_save();
-
+    void on_save_by_cmd(QString);
     void on_export();
     bool on_load_session(QString name);  
     bool on_store_session(QString name);     
@@ -222,6 +223,8 @@ private:
     QTranslator     _myTrans;
     EventObject     _event;
     bool            _bFirstLoad;
+private:
+    tcp_control *tcp_ctl;
 };
 
 } // namespace pv

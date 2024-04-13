@@ -25,7 +25,7 @@
 
 #include <stdint.h>
 #include <string>
-#include <thread>  
+#include <thread>
 #include <QObject>
 #include "libsigrok.h"
 
@@ -33,90 +33,98 @@
 
 #include "ZipMaker.h"
 
-namespace pv {
-
-class SigSession;
-
-namespace data {
-class Snapshot;
-}
-
-namespace dock {
-class ProtocolDock;
-}
-
-class StoreSession : public QObject
+namespace pv
 {
-	Q_OBJECT
 
-private:
-    const static int File_Version = 2;
+    class SigSession;
 
-public:
-    StoreSession(SigSession *session);
+    namespace data
+    {
+        class Snapshot;
+    }
 
-	~StoreSession();
+    namespace dock
+    {
+        class ProtocolDock;
+    }
 
-    SigSession* session();
+    class StoreSession : public QObject
+    {
+        Q_OBJECT
 
-	std::pair<uint64_t, uint64_t> progress();
+    private:
+        const static int File_Version = 2;
 
-	const QString& error();
+    public:
+        StoreSession(SigSession *session);
 
-    bool save_start();
+        ~StoreSession();
 
-    bool export_start();
+        SigSession *session();
 
-	void wait();
+        std::pair<uint64_t, uint64_t> progress();
 
-	void cancel();
+        const QString &error();
 
-private:
-    void save_proc(pv::data::Snapshot *snapshot);
-    bool meta_gen(data::Snapshot *snapshot, std::string &str);
-    void export_proc(pv::data::Snapshot *snapshot);   
-    bool decoders_gen(std::string &str);
- 
+        bool save_start();
 
-public:    
-    bool json_decoders(QJsonArray &array);
-    bool load_decoders(dock::ProtocolDock *widget, QJsonArray dec_array);
-    QString MakeSaveFile(bool bDlg);
-    QString MakeExportFile(bool bDlg);
+        bool export_start();
 
-    inline QString GetFileName()
-        { return _file_name;}
+        void wait();
 
-    bool IsLogicDataType();
- 
+        void cancel();
 
-private:
-    QList<QString> getSuportedExportFormats();
-    double get_integer(GVariant * var);
-    void MakeChunkName(char *chunk_name, int chunk_num, int index, int type, int version);
+    private:
+        void save_proc(pv::data::Snapshot *snapshot);
+        bool meta_gen(data::Snapshot *snapshot, std::string &str);
+        void export_proc(pv::data::Snapshot *snapshot);
+        bool decoders_gen(std::string &str);
 
-signals:
-	void progress_updated();
+    public:
+        bool json_decoders(QJsonArray &array);
+        bool load_decoders(dock::ProtocolDock *widget, QJsonArray dec_array);
+        QString MakeSaveFile(bool bDlg);
+        QString MakeExportFile(bool bDlg);
 
-public:
-   ISessionDataGetter   *_sessionDataGetter;
+        inline QString GetFileName()
+        {
+            return _file_name;
+        }
+        void SetCmdSaveFileName(QString filename)
+        {
+            printf("[SetCmdSaveFileName]:%s", filename);
+            _cmd_save_file_name = filename;
+        }
+        bool IsLogicDataType();
 
-private:
-    QString         _file_name;
-    QString         _suffix;
-    SigSession      *_session;
+    private:
+        QList<QString> getSuportedExportFormats();
+        double get_integer(GVariant *var);
+        void MakeChunkName(char *chunk_name, int chunk_num, int index, int type, int version);
 
-	std::thread   _thread;
+    signals:
+        void progress_updated();
 
-    const struct sr_output_module* _outModule;
- 
-	uint64_t        _units_stored;
-	uint64_t        _unit_count;
-    bool            _has_error;
-	QString         _error;
-    volatile bool   _canceled;
-    ZipMaker        m_zipDoc;  
-};
+    public:
+        ISessionDataGetter *_sessionDataGetter;
+        QString _cmd_save_file_name;
+
+    private:
+        QString _file_name;
+        QString _suffix;
+        SigSession *_session;
+
+        std::thread _thread;
+
+        const struct sr_output_module *_outModule;
+
+        uint64_t _units_stored;
+        uint64_t _unit_count;
+        bool _has_error;
+        QString _error;
+        volatile bool _canceled;
+        ZipMaker m_zipDoc;
+    };
 
 } // pv
 

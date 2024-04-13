@@ -118,6 +118,9 @@ namespace pv
             void on_device_selected();
             void on_samplerate_sel(int index);
             void on_samplecount_sel(int index);
+            void ctrl_start();
+            void ctrl_stop();
+            void ctrl_instant();
 
             void show_session_error(
                 const QString text, const QString info_text);
